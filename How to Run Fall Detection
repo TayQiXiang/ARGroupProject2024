@@ -1,0 +1,20 @@
+# To install
+pip install torch torchvision numpy
+pip install pip2 install opencv-python==4.2.0.32
+
+apt install python-future
+
+
+# To give run access
+# All .py files in ROS_fall_detection 
+chmod +x
+
+
+# To run
+Option 1
+roslaunch fall_det fall_det.launch 
+
+Option 2 (debugging / testing with output)
+terminal 1 - python detector.py
+terminal 2 - python cam.py
+
