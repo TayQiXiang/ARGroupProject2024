@@ -91,8 +91,8 @@ class Server:
                
         elif self.detection == "No":
             rospy.loginfo("Normal condition.")
-time.sleep(15)
-self.global_lock=False
+        time.sleep(15)
+        self.global_lock=False
 
 
 
