@@ -61,7 +61,7 @@ class Server:
     def __init__(self):
         self.keyword = ""
         self.detection = ""
-        self.global_lock = False #workaround to stop function keep getting pinging
+        self.global_lock = False #workaround to 
 
     def keyword_callback(self,msg):
         self.keyword = msg.data
@@ -78,20 +78,20 @@ class Server:
         # Keyword represents the user responds
         # Detection represents the fall detection system response
         if self.detection == "Yes":
-            subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Are you okay? Do you need help?"])
+            subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Do you need help? Do you need help?"])
             time.sleep(5)
             if "yes" in self.keyword.lower() and self.detection == "Yes":
                 rospy.loginfo("Playing alert sound: 'Alert! Fall detected! Calling for help.'")
                 subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Alert! Fall detected! Calling for help."])
                 # Simulate calling for help by logging to the console
                 rospy.loginfo("Simulating a call to emergency contact.")
-            elif "no " in self.keyword.lower() and self.detection == "Yes":
+            elif "no" in self.keyword.lower() and self.detection == "Yes":
                 rospy.loginfo("Fall detected but No help needed.'")
                 subprocess.check_output(['rosrun', 'sound_play', 'say.py', "No help needed. No help needed."])
                
         elif self.detection == "No":
             rospy.loginfo("Normal condition.")
-        time.sleep(15)
+        time.sleep(10)# stop function keep getting pinging
         self.global_lock=False
 
 
