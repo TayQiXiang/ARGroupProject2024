@@ -20,7 +20,7 @@ cd ~/catkin_ws/src
 catkin_create_pkg alert_notification std_msgs rospy roscpp
 cd ~/catkin_ws/
 catkin_make
-source devel/setup.bash 
+source devel/setup.bash
 '''
 
 # MAIN CODE HERE
@@ -32,6 +32,7 @@ import rospy
 from std_msgs.msg import String
 import message_filters
 import subprocess
+import time
 # from sound_play.libsoundplay import SoundClient
 # from twilio.rest import Client [Uncheck if using Twilio - necessary for making calls]
 
@@ -41,7 +42,7 @@ def make_call():
     # Twilio credentials - May use config files to store these
     account_sid = 'ACeb1c0a90633b6766ac90cf9014995cde' # Input the ID here
     auth_token = '495aaf19bdbdea37d9a3013c33bc3835' # Input the Authentication Token here
-    
+   
     # Create a Twilio client instance with the provided credentials
     client = Client(account_sid, auth_token)
 
@@ -60,33 +61,39 @@ class Server:
     def __init__(self):
         self.keyword = ""
         self.detection = ""
+self.global_lock = False #workaround to stop function keep getting pinging
 
     def keyword_callback(self,msg):
         self.keyword = msg.data
         rospy.loginfo(self.keyword)
+       
 
     def detection_callback(self,msg):
         self.detection = msg.data
-        rospy.loginfo(self.detection)
         self.compute()
 
     def compute(self):
+if self.global_lock == True: return
+else: self.global_lock=True
         # Keyword represents the user responds
         # Detection represents the fall detection system response
         if self.detection == "Yes":
-            subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Are you okay? Do you need assistance?"])
-            ros.sleep(5)
-            if self.keyword == "Yes" and self.detection == "Yes":
+            subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Are you okay? Do you need help?"])
+            time.sleep(5)
+            if "yes" in self.keyword.lower() and self.detection == "Yes":
                 rospy.loginfo("Playing alert sound: 'Alert! Fall detected! Calling for help.'")
                 subprocess.check_output(['rosrun', 'sound_play', 'say.py', "Alert! Fall detected! Calling for help."])
                 # Simulate calling for help by logging to the console
                 rospy.loginfo("Simulating a call to emergency contact.")
-            elif self.keyword == "No" and self.detection == "Yes":
-                rospy.loginfo("Playing alert sound: 'Alert! Fall detected! No help needed.'")
-                subprocess.check_output(['rosrun', 'sound_play', 'say.py', "No help needed."])
-                ros.sleep(5)
+            elif "no " in self.keyword.lower() and self.detection == "Yes":
+                rospy.loginfo("Fall detected but No help needed.'")
+                subprocess.check_output(['rosrun', 'sound_play', 'say.py', "No help needed. No help needed."])
+               
         elif self.detection == "No":
             rospy.loginfo("Normal condition.")
+time.sleep(15)
+self.global_lock=False
+
 
 
 
