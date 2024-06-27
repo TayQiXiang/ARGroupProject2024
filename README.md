@@ -9,7 +9,9 @@ sudo apt install python-rosinstall python-rosinstall-generator python-wstool bui
 sudo apt-get install ros-melodic-sound-play ros-melodic-audio-common
 sudo apt-get install python-pyaudio
 sudo apt-get install python-pocketsphinx
-
+----
+cd  /opt/ros/melodic/share/
+git clone -b master https://github.com/robocupathomeedu/rc-home-edu-learn-ros.git
 ```
 ---
 To start the program, Run the following scripts in separated terminals.  
