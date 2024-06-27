@@ -64,10 +64,11 @@ class Server:
     def keyword_callback(self,msg):
         self.keyword = msg.data
         rospy.loginfo(self.keyword)
-        self.compute()
 
     def detection_callback(self,msg):
         self.detection = msg.data
+        rospy.loginfo(self.detection)
+        self.compute()
 
     def compute(self):
         # Keyword represents the user responds
