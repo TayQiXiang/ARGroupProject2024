@@ -61,7 +61,7 @@ class Server:
     def __init__(self):
         self.keyword = ""
         self.detection = ""
-self.global_lock = False #workaround to stop function keep getting pinging
+        self.global_lock = False #workaround to stop function keep getting pinging
 
     def keyword_callback(self,msg):
         self.keyword = msg.data
@@ -73,8 +73,8 @@ self.global_lock = False #workaround to stop function keep getting pinging
         self.compute()
 
     def compute(self):
-if self.global_lock == True: return
-else: self.global_lock=True
+        if self.global_lock == True: return
+        else: self.global_lock=True
         # Keyword represents the user responds
         # Detection represents the fall detection system response
         if self.detection == "Yes":
