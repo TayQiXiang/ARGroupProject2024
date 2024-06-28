@@ -34,6 +34,7 @@ def callback(data):
 if __name__ == '__main__':
     rospy.init_node('detector', anonymous=True)
     pub = rospy.Publisher('det_result', Image, queue_size=10)
+    pub_result = rospy.Publisher('pub_result', String, queue_size=10)
     rospy.Subscriber('cam_image', Image, callback)
     rate = rospy.Rate(50) # 10hz
     # model 
@@ -104,7 +105,9 @@ if __name__ == '__main__':
         run_time = end-start
         if fall_dis > 24:
             print('Normal!', 1. / run_time)
+            pub_result.publish("No")
         else:
             print('Down!', 1. / run_time)
+            pub_result.publish("Yes")
         det_result = bridge.cv2_to_imgmsg(det_result, encoding="passthrough")
         pub.publish(det_result)
